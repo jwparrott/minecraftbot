@@ -33,6 +33,7 @@ function optionalNumber(name: string, fallback: number): number {
 export type AppConfig = {
   ollamaUrl: string;
   ollamaModel: string;
+  ollamaTimeoutSeconds: number;
   minecraft: {
     host: string;
     port: number;
@@ -94,6 +95,7 @@ export function loadConfig(): AppConfig {
   return {
     ollamaUrl: optional("OLLAMA_URL", "http://127.0.0.1:11434"),
     ollamaModel: optional("OLLAMA_MODEL", "llama3.1"),
+    ollamaTimeoutSeconds: optionalNumber("OLLAMA_TIMEOUT_SECONDS", 120),
     minecraft: {
       host: required("MC_HOST"),
       port: optionalNumber("MC_PORT", 25565),

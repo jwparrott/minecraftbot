@@ -25,7 +25,11 @@ function parseArgs(rawArgs: string): unknown {
   if (!rawArgs || rawArgs.trim().length === 0) {
     return {};
   }
-  return JSON.parse(rawArgs);
+  try {
+    return JSON.parse(rawArgs);
+  } catch {
+    throw new Error(`Tool arguments could not be parsed as JSON: ${rawArgs.slice(0, 120)}`);
+  }
 }
 
 function requireObject(value: unknown): Record<string, unknown> {

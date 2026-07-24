@@ -28,14 +28,38 @@ function Test-CommandAvailable {
   return [bool](Get-Command $Name -ErrorAction SilentlyContinue)
 }
 
+function Resolve-OllamaExecutable {
+  $command = Get-Command "ollama" -ErrorAction SilentlyContinue
+  if ($command -and $command.Source) {
+    return $command.Source
+  }
+
+  $candidates = @(
+    "C:\Users\$env:USERNAME\AppData\Local\Programs\Ollama\ollama.exe",
+    "C:\Program Files\Ollama\ollama.exe"
+  )
+
+  foreach ($candidate in $candidates) {
+    if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+      return $candidate
+    }
+  }
+
+  return $null
+}
+
 function Install-WithWinget {
   param(
     [string]$PackageId,
     [string]$FriendlyName,
-    [string]$CommandName
+    [string]$CommandName,
+    [string]$ExistingPath = ""
   )
 
-  if (Test-CommandAvailable $CommandName) {
+  if (
+    (Test-CommandAvailable $CommandName) -or
+    ($ExistingPath -and $ExistingPath.Trim().Length -gt 0 -and (Test-Path -LiteralPath $ExistingPath -PathType Leaf))
+  ) {
     Write-Host "$FriendlyName already installed."
     return
   }
@@ -138,7 +162,11 @@ function Find-ServerJar {
 }
 
 function Ensure-OllamaReady {
-  param([string]$ModelName)
+  param(
+    [string]$ModelName,
+    [string]$OllamaExecutable,
+    [bool]$PullModel
+  )
 
   Write-Step "Ensuring Ollama service is running"
   $ready = $false
@@ -152,7 +180,7 @@ function Ensure-OllamaReady {
   $startedByScript = $false
   $ollamaProcessId = $null
   if (-not $ready) {
-    $ollamaProcess = Start-Process -FilePath "ollama" -ArgumentList "serve" -WindowStyle Hidden -PassThru
+    $ollamaProcess = Start-Process -FilePath $OllamaExecutable -ArgumentList "serve" -WindowStyle Hidden -PassThru
     $startedByScript = $true
     $ollamaProcessId = $ollamaProcess.Id
     for ($i = 0; $i -lt 30; $i += 1) {
@@ -170,10 +198,14 @@ function Ensure-OllamaReady {
     throw "Ollama API did not become ready on http://127.0.0.1:11434."
   }
 
-  Write-Step "Pulling model '$ModelName'"
-  & ollama pull $ModelName
-  if ($LASTEXITCODE -ne 0) {
-    throw "Failed to pull model: $ModelName"
+  if ($PullModel) {
+    Write-Step "Pulling model '$ModelName'"
+    & $OllamaExecutable pull $ModelName
+    if ($LASTEXITCODE -ne 0) {
+      throw "Failed to pull model: $ModelName"
+    }
+  } else {
+    Write-Host "Skipping Ollama model pull."
   }
 
   return @{
@@ -196,9 +228,30 @@ if (-not (Test-Path -LiteralPath $runtimeDir -PathType Container)) {
 Write-Step "Installing prerequisites (Node.js, Java, Ollama)"
 Install-WithWinget -PackageId "OpenJS.NodeJS.LTS" -FriendlyName "Node.js LTS" -CommandName "node"
 Install-WithWinget -PackageId "EclipseAdoptium.Temurin.21.JRE" -FriendlyName "Java 21 JRE" -CommandName "java"
-Install-WithWinget -PackageId "Ollama.Ollama" -FriendlyName "Ollama" -CommandName "ollama"
+Install-WithWinget `
+  -PackageId "Ollama.Ollama" `
+  -FriendlyName "Ollama" `
+  -CommandName "ollama" `
+  -ExistingPath (Resolve-OllamaExecutable)
 
-$ollamaState = Ensure-OllamaReady -ModelName $Model
+$ollamaExecutable = Resolve-OllamaExecutable
+if (-not $ollamaExecutable) {
+  throw "Ollama appears to be installed, but 'ollama.exe' could not be located."
+}
+
+$pullModelAnswer = Read-Host "Pull an Ollama model now? (Y/n)"
+$pullModel = $true
+if ($pullModelAnswer -and $pullModelAnswer.Trim().ToLower() -in @("n", "no")) {
+  $pullModel = $false
+}
+if ($pullModel) {
+  $modelInput = Read-Host "Model to pull [$Model]"
+  if ($modelInput -and $modelInput.Trim().Length -gt 0) {
+    $Model = $modelInput.Trim()
+  }
+}
+
+$ollamaState = Ensure-OllamaReady -ModelName $Model -OllamaExecutable $ollamaExecutable -PullModel $pullModel
 
 if (-not (Test-Path -LiteralPath $envPath -PathType Leaf)) {
   Write-Step "Creating .env from .env.example"

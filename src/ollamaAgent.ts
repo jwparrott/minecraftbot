@@ -14,6 +14,7 @@ export class OllamaToolAgent {
   private tools: ToolRegistry;
   private systemPrompt: string;
   private maxToolCallsPerPrompt: number;
+  private timeoutMs: number;
 
   public constructor(options: {
     ollamaUrl: string;
@@ -21,12 +22,14 @@ export class OllamaToolAgent {
     tools: ToolRegistry;
     systemPrompt: string;
     maxToolCallsPerPrompt: number;
+    timeoutMs: number;
   }) {
     this.ollamaUrl = options.ollamaUrl;
     this.model = options.model;
     this.tools = options.tools;
     this.systemPrompt = options.systemPrompt;
     this.maxToolCallsPerPrompt = Math.max(1, Math.floor(options.maxToolCallsPerPrompt));
+    this.timeoutMs = Math.max(1000, options.timeoutMs);
   }
 
   public async runPrompt(prompt: string, player: string): Promise<string> {
@@ -85,11 +88,27 @@ export class OllamaToolAgent {
       tools: this.tools.definitions
     };
 
-    const response = await fetch(`${this.ollamaUrl}/api/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
-    });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), this.timeoutMs);
+
+    let response: Response;
+    try {
+      response = await fetch(`${this.ollamaUrl}/api/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        signal: controller.signal
+      });
+    } catch (error) {
+      const isTimeout = error instanceof Error && error.name === "AbortError";
+      throw new Error(
+        isTimeout
+          ? `Ollama request timed out after ${this.timeoutMs / 1000}s`
+          : `Ollama request failed: ${error instanceof Error ? error.message : String(error)}`
+      );
+    } finally {
+      clearTimeout(timer);
+    }
 
     if (!response.ok) {
       throw new Error(`Ollama API error: ${response.status} ${response.statusText}`);

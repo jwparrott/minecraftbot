@@ -12,7 +12,8 @@ async function main(): Promise<void> {
     model: config.ollamaModel,
     tools,
     systemPrompt: config.systemPrompt,
-    maxToolCallsPerPrompt: config.guardrails.maxToolCallsPerPrompt
+    maxToolCallsPerPrompt: config.guardrails.maxToolCallsPerPrompt,
+    timeoutMs: Math.max(1000, config.ollamaTimeoutSeconds * 1000)
   });
 
   const queue: PromptEvent[] = [];
@@ -80,6 +81,12 @@ async function main(): Promise<void> {
         return;
       }
       cooldownByPlayer.set(event.player, now + cooldownMs);
+      // Prune entries that have already expired to prevent unbounded growth.
+      for (const [player, expiry] of cooldownByPlayer) {
+        if (now >= expiry) {
+          cooldownByPlayer.delete(player);
+        }
+      }
     }
 
     queue.push(event);
