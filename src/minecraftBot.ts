@@ -1,7 +1,8 @@
 import mineflayer, { Bot } from "mineflayer";
-import { pathfinder, Movements, goals } from "mineflayer-pathfinder";
+import pathfinderPackage from "mineflayer-pathfinder";
 import type { AppConfig } from "./config.js";
 
+const { pathfinder, Movements, goals } = pathfinderPackage;
 const { GoalFollow, GoalNear, GoalBlock } = goals;
 
 export type PromptEvent = {
@@ -16,7 +17,7 @@ export class MinecraftController {
   private bot: Bot;
   private config: AppConfig;
   private callback?: ChatCallback;
-  private movements?: Movements;
+  private movements?: InstanceType<typeof Movements>;
   private followTimeout?: NodeJS.Timeout;
 
   public constructor(config: AppConfig) {
