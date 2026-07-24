@@ -1,6 +1,5 @@
 import mineflayer, { Bot } from "mineflayer";
 import { pathfinder, Movements, goals } from "mineflayer-pathfinder";
-import minecraftData from "minecraft-data";
 import type { AppConfig } from "./config.js";
 
 const { GoalFollow, GoalNear, GoalBlock } = goals;
@@ -109,8 +108,7 @@ export class MinecraftController {
 
   private registerEvents(): void {
     this.bot.once("spawn", () => {
-      const data = minecraftData(this.bot.version);
-      this.movements = new Movements(this.bot, data);
+      this.movements = new Movements(this.bot);
       this.bot.pathfinder.setMovements(this.movements);
       console.log("Bot spawned and pathfinder initialized.");
     });

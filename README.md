@@ -5,6 +5,8 @@ This project runs a Minecraft bot (NPC-like account) that:
 - Sends prompts to an Ollama model
 - Lets the model call tools to administer the server and control bot behavior
 
+Full function/tool reference: [FUNCTIONS_AND_TOOLS.md](C:/Users/Admin/Documents/minecraftbot/docs/FUNCTIONS_AND_TOOLS.md)
+
 ## Features
 - Chat trigger prefix (default: `!admin`)
 - Optional player allowlist
@@ -33,6 +35,49 @@ This project runs a Minecraft bot (NPC-like account) that:
    ```bash
    npm install
    ```
+
+### One-command Windows setup + start
+You can use [setup-and-start.ps1](C:/Users/Admin/Documents/minecraftbot/scripts/setup-and-start.ps1) to:
+- install Node.js, Java, and Ollama (via `winget`)
+- pull a small Gemma model (`gemma2:2b` by default)
+- create/update `.env` for local server use
+- detect a local Minecraft server folder and start it
+- start the bot
+
+PowerShell:
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\setup-and-start.ps1 -ServerDir "C:\path\to\server" -AdminPlayers "YourName"
+```
+
+Or via npm:
+```bash
+npm run setup:start -- -ServerDir "C:\path\to\server" -AdminPlayers "YourName"
+```
+
+If `-ServerDir` is omitted, the script tries these folders under the project root:
+- `server`
+- `minecraft-server`
+- `minecraft_server`
+- `mc-server`
+
+### Stop everything started by setup
+Use [stop-system.ps1](C:/Users/Admin/Documents/minecraftbot/scripts/stop-system.ps1):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\stop-system.ps1
+```
+
+Or:
+```bash
+npm run setup:stop
+```
+
+By default it stops tracked bot/server/Ollama processes recorded by setup.  
+If you also want to force-stop any Ollama `serve` process:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\stop-system.ps1 -StopAnyOllama
+```
 
 ## Run
 - Development:

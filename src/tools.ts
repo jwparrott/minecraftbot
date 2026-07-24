@@ -32,7 +32,7 @@ function requireObject(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     throw new Error("Tool arguments must be a JSON object.");
   }
-  return value;
+  return value as Record<string, unknown>;
 }
 
 function requireStringField(object: Record<string, unknown>, key: string): string {
