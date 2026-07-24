@@ -1,0 +1,45 @@
+[16:45:49] [Server thread/INFO]: Starting minecraft server version 1.12.2
+[16:45:49] [Server thread/INFO]: Loading properties
+[16:45:49] [Server thread/INFO]: Default game type: SURVIVAL
+[16:45:49] [Server thread/INFO]: Generating keypair
+[16:45:49] [Server thread/INFO]: Starting Minecraft server on *:25565
+[16:45:49] [Server thread/INFO]: Using default channel type
+[16:45:51] [Server thread/INFO]: Preparing level "world"
+[16:45:52] [Server thread/INFO]: Loaded 488 advancements
+[16:45:53] [Server thread/INFO]: Preparing start region for level 0
+[16:45:54] [Server thread/INFO]: Preparing spawn area: 5%
+[16:45:56] [Server thread/INFO]: Preparing spawn area: 9%
+[16:45:57] [Server thread/INFO]: Preparing spawn area: 11%
+[16:45:58] [Server thread/INFO]: Preparing spawn area: 14%
+[16:45:59] [Server thread/INFO]: Preparing spawn area: 17%
+[16:46:00] [Server thread/INFO]: Preparing spawn area: 20%
+[16:46:01] [Server thread/INFO]: Preparing spawn area: 22%
+[16:46:02] [Server thread/INFO]: Preparing spawn area: 25%
+[16:46:03] [Server thread/INFO]: Preparing spawn area: 28%
+[16:46:04] [Server thread/INFO]: Preparing spawn area: 30%
+[16:46:05] [Server thread/INFO]: Preparing spawn area: 33%
+[16:46:06] [Server thread/INFO]: Preparing spawn area: 35%
+[16:46:07] [Server thread/INFO]: Preparing spawn area: 38%
+[16:46:08] [Server thread/INFO]: Preparing spawn area: 40%
+[16:46:09] [Server thread/INFO]: Preparing spawn area: 41%
+[16:46:10] [Server thread/INFO]: Preparing spawn area: 44%
+[16:46:11] [Server thread/INFO]: Preparing spawn area: 47%
+[16:46:12] [Server thread/INFO]: Preparing spawn area: 50%
+[16:46:13] [Server thread/INFO]: Preparing spawn area: 53%
+[16:46:14] [Server thread/INFO]: Preparing spawn area: 55%
+[16:46:15] [Server thread/INFO]: Preparing spawn area: 58%
+[16:46:16] [Server thread/INFO]: Preparing spawn area: 62%
+[16:46:17] [Server thread/INFO]: Preparing spawn area: 65%
+[16:46:18] [Server thread/INFO]: Preparing spawn area: 67%
+[16:46:19] [Server thread/INFO]: Preparing spawn area: 71%
+[16:46:20] [Server thread/INFO]: Preparing spawn area: 74%
+[16:46:21] [Server thread/INFO]: Preparing spawn area: 77%
+[16:46:22] [Server thread/INFO]: Preparing spawn area: 79%
+[16:46:23] [Server thread/INFO]: Preparing spawn area: 83%
+[16:46:24] [Server thread/INFO]: Preparing spawn area: 86%
+[16:46:25] [Server thread/INFO]: Preparing spawn area: 89%
+[16:46:26] [Server thread/INFO]: Preparing spawn area: 93%
+[16:46:27] [Server thread/INFO]: Preparing spawn area: 97%
+[16:46:28] [Server thread/INFO]: Preparing spawn area: 99%
+[16:46:29] [Server thread/INFO]: Done (37.229s)! For help, type "help" or "?"
+[16:46:32] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 2991ms behind, skipping 59 tick(s)
