@@ -5,8 +5,10 @@ type OllamaChatRequest = {
   model: string;
   messages: ChatMessage[];
   stream: boolean;
-  tools: ToolRegistry["definitions"];
+  tools?: ToolRegistry["definitions"];
 };
+
+class OllamaToolSupportError extends Error {}
 
 export class OllamaToolAgent {
   private ollamaUrl: string;
@@ -15,6 +17,7 @@ export class OllamaToolAgent {
   private systemPrompt: string;
   private maxToolCallsPerPrompt: number;
   private timeoutMs: number;
+  private toolsSupported: boolean;
 
   public constructor(options: {
     ollamaUrl: string;
@@ -30,13 +33,18 @@ export class OllamaToolAgent {
     this.systemPrompt = options.systemPrompt;
     this.maxToolCallsPerPrompt = Math.max(1, Math.floor(options.maxToolCallsPerPrompt));
     this.timeoutMs = Math.max(1000, options.timeoutMs);
+    this.toolsSupported = true;
   }
 
   public async runPrompt(prompt: string, player: string): Promise<string> {
+    if (!this.toolsSupported) {
+      return this.runPromptWithoutTools(prompt, player);
+    }
+
     const messages: ChatMessage[] = [
       {
         role: "system",
-        content: `${this.systemPrompt}\n\nYou are responding to Minecraft player '${player}'. Keep responses concise in chat.`
+        content: this.buildSystemPrompt(player, true)
       },
       {
         role: "user",
@@ -46,7 +54,17 @@ export class OllamaToolAgent {
 
     const maxIterations = this.maxToolCallsPerPrompt;
     for (let i = 0; i < maxIterations; i += 1) {
-      const response = await this.chat(messages);
+      let response: ChatCompletionResponse;
+      try {
+        response = await this.chat(messages, true);
+      } catch (error) {
+        if (error instanceof OllamaToolSupportError) {
+          this.toolsSupported = false;
+          console.warn(`Model '${this.model}' does not support tool calling. Falling back to text-only mode.`);
+          return this.runPromptWithoutTools(prompt, player);
+        }
+        throw error;
+      }
       const assistant = response.message;
       messages.push({
         role: "assistant",
@@ -72,6 +90,24 @@ export class OllamaToolAgent {
     return "I reached the tool-call limit for this request.";
   }
 
+  private async runPromptWithoutTools(prompt: string, player: string): Promise<string> {
+    const response = await this.chat(
+      [
+        {
+          role: "system",
+          content: this.buildSystemPrompt(player, false)
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      false
+    );
+
+    return response.message.content?.trim() || "I can't perform actions with the current Ollama model.";
+  }
+
   private async executeToolCall(call: ToolCall, player: string): Promise<string> {
     try {
       return await this.tools.execute(call.function.name, call.function.arguments || "{}", { player });
@@ -81,13 +117,28 @@ export class OllamaToolAgent {
     }
   }
 
-  private async chat(messages: ChatMessage[]): Promise<ChatCompletionResponse> {
+  private buildSystemPrompt(player: string, useTools: boolean): string {
+    if (useTools) {
+      return `${this.systemPrompt}\n\nYou are responding to Minecraft player '${player}'. Keep responses concise in chat.`;
+    }
+
+    return (
+      `${this.systemPrompt}\n\n` +
+      `You are responding to Minecraft player '${player}'. Keep responses concise in chat. ` +
+      "The current Ollama model does not support tool calling, so do not claim you performed in-game actions or server commands. " +
+      "If the user asks for an action, explain that this model cannot execute tools and that a tool-capable model is required."
+    );
+  }
+
+  private async chat(messages: ChatMessage[], useTools: boolean): Promise<ChatCompletionResponse> {
     const body: OllamaChatRequest = {
       model: this.model,
       messages,
-      stream: false,
-      tools: this.tools.definitions
+      stream: false
     };
+    if (useTools) {
+      body.tools = this.tools.definitions;
+    }
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), this.timeoutMs);
@@ -114,6 +165,13 @@ export class OllamaToolAgent {
     if (!response.ok) {
       const details = await response.text();
       const detailText = details.trim();
+      if (
+        useTools &&
+        response.status === 400 &&
+        detailText.toLowerCase().includes("does not support tools")
+      ) {
+        throw new OllamaToolSupportError(detailText);
+      }
       throw new Error(
         detailText.length > 0
           ? `Ollama API error: ${response.status} ${response.statusText} - ${detailText}`

@@ -100,11 +100,25 @@ export class MinecraftController {
   }
 
   private resolvePlayerEntity(playerName: string) {
-    const player = this.bot.players[playerName];
-    if (!player || !player.entity) {
-      throw new Error(`Player not found or out of range: ${playerName}`);
+    const direct = this.bot.players[playerName];
+    if (direct?.entity) {
+      return direct.entity;
     }
-    return player.entity;
+
+    const targetLower = playerName.toLowerCase();
+    const canonicalName = Object.keys(this.bot.players).find(
+      (name) => name.toLowerCase() === targetLower
+    );
+    const player = canonicalName ? this.bot.players[canonicalName] : undefined;
+    if (player?.entity) {
+      return player.entity;
+    }
+
+    const knownPlayers = this.listPlayers();
+    const known = knownPlayers.length > 0 ? knownPlayers.join(", ") : "none";
+    throw new Error(
+      `Player '${playerName}' is not currently visible to the bot. Players currently visible: ${known}`
+    );
   }
 
   private registerEvents(): void {

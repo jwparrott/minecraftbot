@@ -84,6 +84,24 @@ function validateServerCommand(
   }
 }
 
+function resolveTargetPlayer(
+  object: Record<string, unknown>,
+  contextPlayer: string
+): string {
+  const aliases = ["player", "target", "username", "name"];
+  for (const key of aliases) {
+    const value = object[key];
+    if (typeof value === "string" && value.trim().length > 0) {
+      const normalized = value.trim();
+      if (["me", "myself", "self"].includes(normalized.toLowerCase())) {
+        return contextPlayer;
+      }
+      return normalized;
+    }
+  }
+  return contextPlayer;
+}
+
 export function createToolRegistry(
   minecraft: MinecraftController,
   config: AppConfig
@@ -175,13 +193,16 @@ export function createToolRegistry(
           parameters: {
             type: "object",
             properties: {
-              player: { type: "string", description: "Target player name." },
+              player: {
+                type: "string",
+                description:
+                  "Target player name. Optional; if omitted or set to 'me', follows the prompting player."
+              },
               seconds: {
                 type: "number",
                 description: `How long to follow. If omitted, defaults to ${defaultFollowTimeoutSeconds} seconds.`
               }
-            },
-            required: ["player"]
+            }
           }
         }
       },
@@ -218,9 +239,12 @@ export function createToolRegistry(
           parameters: {
             type: "object",
             properties: {
-              player: { type: "string", description: "Target player name." }
-            },
-            required: ["player"]
+              player: {
+                type: "string",
+                description:
+                  "Target player name. Optional; if omitted or set to 'me', uses the prompting player."
+              }
+            }
           }
         }
       },
@@ -239,9 +263,12 @@ export function createToolRegistry(
           parameters: {
             type: "object",
             properties: {
-              player: { type: "string", description: "Target player name." }
-            },
-            required: ["player"]
+              player: {
+                type: "string",
+                description:
+                  "Target player name. Optional; if omitted or set to 'me', uses the prompting player."
+              }
+            }
           }
         }
       },
@@ -303,6 +330,10 @@ export function createToolRegistry(
       }
 
       const args = parseArgs(rawArgs);
+      if (name === "follow_player" || name === "go_to_player" || name === "look_at_player") {
+        const object = requireObject(args);
+        object.player = resolveTargetPlayer(object, context.player);
+      }
       return executor(args);
     }
   };
