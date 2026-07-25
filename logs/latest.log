@@ -1,45 +1,167 @@
-[16:45:49] [Server thread/INFO]: Starting minecraft server version 1.12.2
-[16:45:49] [Server thread/INFO]: Loading properties
-[16:45:49] [Server thread/INFO]: Default game type: SURVIVAL
-[16:45:49] [Server thread/INFO]: Generating keypair
-[16:45:49] [Server thread/INFO]: Starting Minecraft server on *:25565
-[16:45:49] [Server thread/INFO]: Using default channel type
-[16:45:51] [Server thread/INFO]: Preparing level "world"
-[16:45:52] [Server thread/INFO]: Loaded 488 advancements
-[16:45:53] [Server thread/INFO]: Preparing start region for level 0
-[16:45:54] [Server thread/INFO]: Preparing spawn area: 5%
-[16:45:56] [Server thread/INFO]: Preparing spawn area: 9%
-[16:45:57] [Server thread/INFO]: Preparing spawn area: 11%
-[16:45:58] [Server thread/INFO]: Preparing spawn area: 14%
-[16:45:59] [Server thread/INFO]: Preparing spawn area: 17%
-[16:46:00] [Server thread/INFO]: Preparing spawn area: 20%
-[16:46:01] [Server thread/INFO]: Preparing spawn area: 22%
-[16:46:02] [Server thread/INFO]: Preparing spawn area: 25%
-[16:46:03] [Server thread/INFO]: Preparing spawn area: 28%
-[16:46:04] [Server thread/INFO]: Preparing spawn area: 30%
-[16:46:05] [Server thread/INFO]: Preparing spawn area: 33%
-[16:46:06] [Server thread/INFO]: Preparing spawn area: 35%
-[16:46:07] [Server thread/INFO]: Preparing spawn area: 38%
-[16:46:08] [Server thread/INFO]: Preparing spawn area: 40%
-[16:46:09] [Server thread/INFO]: Preparing spawn area: 41%
-[16:46:10] [Server thread/INFO]: Preparing spawn area: 44%
-[16:46:11] [Server thread/INFO]: Preparing spawn area: 47%
-[16:46:12] [Server thread/INFO]: Preparing spawn area: 50%
-[16:46:13] [Server thread/INFO]: Preparing spawn area: 53%
-[16:46:14] [Server thread/INFO]: Preparing spawn area: 55%
-[16:46:15] [Server thread/INFO]: Preparing spawn area: 58%
-[16:46:16] [Server thread/INFO]: Preparing spawn area: 62%
-[16:46:17] [Server thread/INFO]: Preparing spawn area: 65%
-[16:46:18] [Server thread/INFO]: Preparing spawn area: 67%
-[16:46:19] [Server thread/INFO]: Preparing spawn area: 71%
-[16:46:20] [Server thread/INFO]: Preparing spawn area: 74%
-[16:46:21] [Server thread/INFO]: Preparing spawn area: 77%
-[16:46:22] [Server thread/INFO]: Preparing spawn area: 79%
-[16:46:23] [Server thread/INFO]: Preparing spawn area: 83%
-[16:46:24] [Server thread/INFO]: Preparing spawn area: 86%
-[16:46:25] [Server thread/INFO]: Preparing spawn area: 89%
-[16:46:26] [Server thread/INFO]: Preparing spawn area: 93%
-[16:46:27] [Server thread/INFO]: Preparing spawn area: 97%
-[16:46:28] [Server thread/INFO]: Preparing spawn area: 99%
-[16:46:29] [Server thread/INFO]: Done (37.229s)! For help, type "help" or "?"
-[16:46:32] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 2991ms behind, skipping 59 tick(s)
+[13:26:45] [Server thread/INFO]: Starting minecraft server version 1.12.2
+[13:26:45] [Server thread/WARN]: To start the server with more ram, launch it as "java -Xmx1024M -Xms1024M -jar minecraft_server.jar"
+[13:26:45] [Server thread/INFO]: Loading properties
+[13:26:45] [Server console handler/ERROR]: Exception handling console input
+java.io.IOException: The handle is invalid
+	at java.io.FileInputStream.readBytes(Native Method) ~[?:1.8.0_501]
+	at java.io.FileInputStream.read(Unknown Source) ~[?:1.8.0_501]
+	at java.io.BufferedInputStream.read1(Unknown Source) ~[?:1.8.0_501]
+	at java.io.BufferedInputStream.read(Unknown Source) ~[?:1.8.0_501]
+	at sun.nio.cs.StreamDecoder.readBytes(Unknown Source) ~[?:1.8.0_501]
+	at sun.nio.cs.StreamDecoder.implRead(Unknown Source) ~[?:1.8.0_501]
+	at sun.nio.cs.StreamDecoder.read(Unknown Source) ~[?:1.8.0_501]
+	at java.io.InputStreamReader.read(Unknown Source) ~[?:1.8.0_501]
+	at java.io.BufferedReader.fill(Unknown Source) ~[?:1.8.0_501]
+	at java.io.BufferedReader.readLine(Unknown Source) ~[?:1.8.0_501]
+	at java.io.BufferedReader.readLine(Unknown Source) ~[?:1.8.0_501]
+	at nz$2.run(SourceFile:100) [minecraft_server.1.12.2.jar:?]
+[13:26:45] [Server thread/INFO]: Default game type: SURVIVAL
+[13:26:45] [Server thread/INFO]: Generating keypair
+[13:26:46] [Server thread/INFO]: Starting Minecraft server on *:33165
+[13:26:46] [Server thread/INFO]: Using default channel type
+[13:26:49] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[13:26:49] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[13:26:49] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[13:26:49] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[13:26:49] [Server thread/INFO]: Preparing level "world"
+[13:26:50] [Server thread/INFO]: Loaded 488 advancements
+[13:26:50] [Server thread/INFO]: Preparing start region for level 0
+[13:26:51] [Server thread/INFO]: Preparing spawn area: 2%
+[13:26:52] [Server thread/INFO]: Preparing spawn area: 25%
+[13:26:53] [Server thread/INFO]: Preparing spawn area: 55%
+[13:26:54] [Server thread/INFO]: Preparing spawn area: 85%
+[13:26:54] [Server thread/INFO]: Done (5.614s)! For help, type "help" or "?"
+[13:28:19] [Server thread/INFO]: AdminNPC[/127.0.0.1:65469] logged in with entity id 274 at (-122.5, 77.0, 265.5)
+[13:28:19] [Server thread/INFO]: AdminNPC joined the game
+[13:29:55] [Server thread/INFO]: Grabmadingdong[/24.162.124.63:58702] logged in with entity id 1152 at (-120.69999998807907, 76.0, 265.69999998807907)
+[13:29:55] [Server thread/INFO]: Grabmadingdong joined the game
+[13:30:45] [Server thread/INFO]: Grabmadingdong lost connection: Internal Exception: java.io.IOException: An existing connection was forcibly closed by the remote host
+[13:30:45] [Server thread/INFO]: Grabmadingdong left the game
+[13:31:24] [Server thread/INFO]: Grabmadingdong[/24.162.124.63:51294] logged in with entity id 2290 at (-121.57924784679038, 78.0, 267.66144103269613)
+[13:31:24] [Server thread/INFO]: Grabmadingdong joined the game
+[13:32:48] [Server thread/INFO]: <Grabmadingdong> !admin
+[13:33:20] [Server thread/INFO]: <Grabmadingdong> !admin follow_player Grabmadingdong
+[13:34:45] [Server thread/INFO]: Grabmadingdong lost connection: Disconnected
+[13:34:45] [Server thread/INFO]: Grabmadingdong left the game
+[13:37:51] [Server thread/INFO]: Grabmadingdong[/24.162.124.63:59482] logged in with entity id 7571 at (-120.80118922983371, 78.0, 268.94629650251835)
+[13:37:51] [Server thread/INFO]: Grabmadingdong joined the game
+[13:38:10] [Server thread/INFO]: <Grabmadingdong> !admin hi
+[13:38:48] [Server thread/INFO]: <Grabmadingdong> !admin what can you do?
+[13:40:27] [Server thread/INFO]: Unknown command. Try /help for a list of commands
+[13:40:41] [Server thread/INFO]: --- Showing help page 1 of 10 (/help <page>) ---
+[13:40:41] [Server thread/INFO]: /advancement <grant|revoke|test> <player>
+[13:40:41] [Server thread/INFO]: /ban <name> [reason ...]
+[13:40:41] [Server thread/INFO]: /ban-ip <address|name> [reason ...]
+[13:40:41] [Server thread/INFO]: /banlist [ips|players]
+[13:40:41] [Server thread/INFO]: /blockdata <x> <y> <z> <dataTag>
+[13:40:41] [Server thread/INFO]: /clear [player] [item] [data] [maxCount] [dataTag]
+[13:40:41] [Server thread/INFO]: /clone <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z> [maskMode] [cloneMode]
+[13:40:41] [Server thread/INFO]: Tip: Use the <tab> key while typing a command to auto-complete the command or its arguments
+[13:41:16] [Server thread/INFO]: Set AdminNPC's game mode to Survival Mode
+[13:41:32] [Server thread/INFO]: --- Showing help page 2 of 10 (/help <page>) ---
+[13:41:32] [Server thread/INFO]: /debug <start|stop>
+[13:41:32] [Server thread/INFO]: /defaultgamemode <mode>
+[13:41:32] [Server thread/INFO]: /deop <player>
+[13:41:32] [Server thread/INFO]: /difficulty <new difficulty>
+[13:41:32] [Server thread/INFO]: /effect <player> <effect> [seconds] [amplifier] [hideParticles] OR /effect <player> clear
+[13:41:32] [Server thread/INFO]: /enchant <player> <enchantment ID> [level]
+[13:41:32] [Server thread/INFO]: /entitydata <entity> <dataTag>
+[13:41:40] [Server thread/INFO]: --- Showing help page 3 of 10 (/help <page>) ---
+[13:41:40] [Server thread/INFO]: /execute <entity> <x> <y> <z> <command> OR /execute <entity> <x> <y> <z> detect <x> <y> <z> <block> <dataValue|-1|state|*> <command>
+[13:41:40] [Server thread/INFO]: /fill <x1> <y1> <z1> <x2> <y2> <z2> <block> [dataValue|state] [oldBlockHandling] [dataTag]
+[13:41:40] [Server thread/INFO]: /function <name> [if <selector>|unless <selector>]
+[13:41:40] [Server thread/INFO]: /gamemode <mode> [player]
+[13:41:40] [Server thread/INFO]: /gamerule <rule name> [value]
+[13:41:40] [Server thread/INFO]: /give <player> <item> [amount] [data] [dataTag]
+[13:41:40] [Server thread/INFO]: /help [page|command name]
+[13:41:54] [Server thread/INFO]: --- Showing help page 4 of 10 (/help <page>) ---
+[13:41:54] [Server thread/INFO]: /kick <player> [reason ...]
+[13:41:54] [Server thread/INFO]: /kill [player|entity]
+[13:41:54] [Server thread/INFO]: /list
+[13:41:54] [Server thread/INFO]: /locate <feature>
+[13:41:54] [Server thread/INFO]: /me <action ...>
+[13:41:54] [Server thread/INFO]: /op <player>
+[13:41:54] [Server thread/INFO]: /pardon <name>
+[13:42:11] [Server thread/INFO]: --- Showing help page 5 of 10 (/help <page>) ---
+[13:42:11] [Server thread/INFO]: /pardon-ip <address>
+[13:42:11] [Server thread/INFO]: /particle <name> <x> <y> <z> <xd> <yd> <zd> <speed> [count] [mode] [player] [params]
+[13:42:11] [Server thread/INFO]: /playsound <sound> <source> <player> [x] [y] [z] [volume] [pitch] [minimumVolume]
+[13:42:11] [Server thread/INFO]: /recipe <give|take> [player] <name|*>
+[13:42:11] [Server thread/INFO]: /reload
+[13:42:11] [Server thread/INFO]: /replaceitem <entity|block> ...
+[13:42:11] [Server thread/INFO]: /save-all [flush]
+[13:42:22] [Server thread/INFO]: --- Showing help page 6 of 10 (/help <page>) ---
+[13:42:22] [Server thread/INFO]: /save-off
+[13:42:22] [Server thread/INFO]: /save-on
+[13:42:22] [Server thread/INFO]: /say <message ...>
+[13:42:22] [Server thread/INFO]: /scoreboard <objectives|players|teams> ...
+[13:42:22] [Server thread/INFO]: /seed
+[13:42:22] [Server thread/INFO]: /setblock <x> <y> <z> <block> [dataValue|state] [oldBlockHandling] [dataTag]
+[13:42:22] [Server thread/INFO]: /setidletimeout <minutes>
+[13:42:29] [Server thread/INFO]: --- Showing help page 7 of 10 (/help <page>) ---
+[13:42:29] [Server thread/INFO]: /setworldspawn [<x> <y> <z>]
+[13:42:29] [Server thread/INFO]: /spawnpoint [player] [<x> <y> <z>]
+[13:42:29] [Server thread/INFO]: /spreadplayers <x> <z> <spreadDistance> <maxRange> <respectTeams true|false> <player ...>
+[13:42:29] [Server thread/INFO]: /stats <entity|block> ...
+[13:42:29] [Server thread/INFO]: /stop
+[13:42:29] [Server thread/INFO]: /stopsound <player> [source] [sound]
+[13:42:29] [Server thread/INFO]: /summon <entityname> [x] [y] [z] [dataTag]
+[13:42:42] [Server thread/INFO]: --- Showing help page 8 of 10 (/help <page>) ---
+[13:42:42] [Server thread/INFO]: /teleport <entity> <x> <y> <z> [<y-rot> <x-rot>]
+[13:42:42] [Server thread/INFO]: /tell <player> <private message ...>
+[13:42:42] [Server thread/INFO]: /tellraw <player> <raw json message>
+[13:42:42] [Server thread/INFO]: /testfor <player> [dataTag]
+[13:42:42] [Server thread/INFO]: /testforblock <x> <y> <z> <block> [dataValue|-1|state|*] [dataTag]
+[13:42:42] [Server thread/INFO]: /testforblocks <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z> [mode]
+[13:42:42] [Server thread/INFO]: /time <set|add|query> <value>
+[13:44:22] [Server thread/INFO]: Grabmadingdong lost connection: Timed out
+[13:44:22] [Server thread/INFO]: Grabmadingdong left the game
+[13:44:22] [Server thread/WARN]: handleDisconnection() called twice
+[13:44:29] [Server thread/INFO]: You whisper to AdminNPC: hi
+[13:46:43] [Server thread/INFO]: AdminNPC lost connection: Internal Exception: java.io.IOException: An existing connection was forcibly closed by the remote host
+[13:46:43] [Server thread/INFO]: AdminNPC left the game
+[13:48:50] [Server thread/INFO]: AdminNPC[/127.0.0.1:57993] logged in with entity id 12750 at (-122.5, 77.0, 265.5)
+[13:48:50] [Server thread/INFO]: AdminNPC joined the game
+[13:48:58] [Server thread/INFO]: Grabmadingdong[/24.162.124.63:50677] logged in with entity id 12970 at (-120.80118922983371, 78.0, 268.94629650251835)
+[13:48:58] [Server thread/INFO]: Grabmadingdong joined the game
+[13:49:16] [Server thread/INFO]: <Grabmadingdong> !admin hi
+[13:49:17] [Server thread/INFO]: <AdminNPC> @Grabmadingdong I failed to process that request: Ollama API error: 400 Bad Request
+[13:53:16] [Server thread/INFO]: AdminNPC lost connection: Internal Exception: java.io.IOException: An existing connection was forcibly closed by the remote host
+[13:53:16] [Server thread/INFO]: AdminNPC left the game
+[13:53:28] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 3840ms behind, skipping 76 tick(s)
+[13:54:10] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 8257ms behind, skipping 165 tick(s)
+[13:54:22] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 3750ms behind, skipping 75 tick(s)
+[13:54:40] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 6942ms behind, skipping 138 tick(s)
+[13:54:56] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 7114ms behind, skipping 142 tick(s)
+[13:55:08] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 2139ms behind, skipping 42 tick(s)
+[13:55:49] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 2280ms behind, skipping 45 tick(s)
+[13:56:15] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 5838ms behind, skipping 116 tick(s)
+[13:57:35] [Server thread/INFO]: AdminNPC[/127.0.0.1:50063] logged in with entity id 18737 at (-122.5, 77.0, 265.5)
+[13:57:35] [Server thread/INFO]: AdminNPC joined the game
+[13:58:01] [Server thread/INFO]: <Grabmadingdong> !admin hi
+[13:58:02] [Server thread/INFO]: <AdminNPC> @Grabmadingdong I failed to process that request: Ollama API error: 400 Bad Request - {"error":"registry.ollama.ai/library/gemma2:2b does not support tools"}
+[13:58:30] [Server thread/INFO]: AdminNPC lost connection: Internal Exception: java.io.IOException: An existing connection was forcibly closed by the remote host
+[13:58:30] [Server thread/INFO]: AdminNPC left the game
+[14:17:24] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 5724ms behind, skipping 114 tick(s)
+[14:17:49] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 7036ms behind, skipping 140 tick(s)
+[14:39:38] [Server thread/INFO]: Grabmadingdong lost connection: Timed out
+[14:39:38] [Server thread/INFO]: Grabmadingdong left the game
+[15:37:48] [Server thread/INFO]: AdminNPC[/127.0.0.1:50866] logged in with entity id 47571 at (-122.5, 77.0, 265.5)
+[15:37:48] [Server thread/INFO]: AdminNPC joined the game
+[15:46:13] [Server thread/INFO]: Grabmadingdong[/24.162.124.63:55327] logged in with entity id 51915 at (-125.32487441167055, 95.65235819819472, 290.85755383986503)
+[15:46:13] [Server thread/INFO]: Grabmadingdong joined the game
+[15:46:57] [Server thread/INFO]: <Grabmadingdong> !admin hi
+[15:46:58] [Server thread/INFO]: <AdminNPC> @Grabmadingdong I failed to process that request: Ollama API error: 400 Bad Request - {"error":"registry.ollama.ai/library/gemma3:1b does not support tools"}
+[15:51:48] [Server thread/INFO]: AdminNPC lost connection: Internal Exception: java.io.IOException: An existing connection was forcibly closed by the remote host
+[15:51:48] [Server thread/INFO]: AdminNPC left the game
+[15:56:59] [Server thread/INFO]: Grabmadingdong lost connection: Disconnected
+[15:56:59] [Server thread/INFO]: Grabmadingdong left the game
+[16:09:28] [Server thread/INFO]: AdminNPC[/127.0.0.1:51455] logged in with entity id 58814 at (-122.5, 77.0, 265.5)
+[16:09:28] [Server thread/INFO]: AdminNPC joined the game
+[16:08:23] [Server thread/WARN]: Time ran backwards! Did the system time change?
+[17:25:12] [Server thread/INFO]: Grabmadingdong[/24.162.124.63:58035] logged in with entity id 105863 at (-120.30000001192093, 77.0, 266.69999998807907)
+[17:25:12] [Server thread/INFO]: Grabmadingdong joined the game
+[17:26:40] [Server thread/INFO]: <Grabmadingdong> !admin hi
+[17:26:59] [Server thread/INFO]: <AdminNPC> Done.
+[17:27:28] [Server thread/INFO]: <Grabmadingdong> !admin follow Grabmadingdong
+[17:27:35] [Server thread/INFO]: <AdminNPC> I apologize, but it seems the server encountered an issue and could not retrieve the follow information for Grabmadingdong.
