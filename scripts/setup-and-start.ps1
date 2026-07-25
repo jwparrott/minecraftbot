@@ -162,11 +162,7 @@ function Find-ServerJar {
 }
 
 function Ensure-OllamaReady {
-  param(
-    [string]$ModelName,
-    [string]$OllamaExecutable,
-    [bool]$PullModel
-  )
+  param([string]$OllamaExecutable)
 
   Write-Step "Ensuring Ollama service is running"
   $ready = $false
@@ -198,20 +194,89 @@ function Ensure-OllamaReady {
     throw "Ollama API did not become ready on http://127.0.0.1:11434."
   }
 
-  if ($PullModel) {
-    Write-Step "Pulling model '$ModelName'"
-    & $OllamaExecutable pull $ModelName
-    if ($LASTEXITCODE -ne 0) {
-      throw "Failed to pull model: $ModelName"
-    }
-  } else {
-    Write-Host "Skipping Ollama model pull."
-  }
-
   return @{
     startedByScript = $startedByScript
     pid = $ollamaProcessId
   }
+}
+
+function Pull-OllamaModel {
+  param(
+    [string]$OllamaExecutable,
+    [string]$ModelName
+  )
+
+  Write-Step "Pulling model '$ModelName'"
+  & $OllamaExecutable pull $ModelName
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to pull model: $ModelName"
+  }
+}
+
+function Get-InstalledOllamaModels {
+  param([string]$OllamaExecutable)
+
+  $output = & $OllamaExecutable list
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to list installed Ollama models."
+  }
+
+  $models = @()
+  foreach ($line in $output) {
+    if (-not $line) {
+      continue
+    }
+    $trimmed = $line.Trim()
+    if ($trimmed.Length -eq 0 -or $trimmed -match "^NAME\s+") {
+      continue
+    }
+    $name = ($trimmed -split "\s+")[0]
+    if ($name -and $name.Length -gt 0) {
+      $models += $name
+    }
+  }
+
+  return $models
+}
+
+function Select-InstalledOllamaModel {
+  param(
+    [string[]]$InstalledModels,
+    [string]$PreferredModel
+  )
+
+  if (-not $InstalledModels -or $InstalledModels.Count -eq 0) {
+    throw "No Ollama models are installed. Re-run and choose to pull a model."
+  }
+
+  Write-Step "Installed Ollama models"
+  for ($i = 0; $i -lt $InstalledModels.Count; $i += 1) {
+    Write-Host ("[{0}] {1}" -f ($i + 1), $InstalledModels[$i])
+  }
+
+  $defaultModel = $InstalledModels[0]
+  if ($PreferredModel -and ($InstalledModels -contains $PreferredModel)) {
+    $defaultModel = $PreferredModel
+  }
+
+  $selection = Read-Host "Model to load (name or number) [$defaultModel]"
+  if (-not $selection -or $selection.Trim().Length -eq 0) {
+    return $defaultModel
+  }
+
+  $value = $selection.Trim()
+  $index = 0
+  if ([int]::TryParse($value, [ref]$index)) {
+    if ($index -lt 1 -or $index -gt $InstalledModels.Count) {
+      throw "Invalid model selection index: $index"
+    }
+    return $InstalledModels[$index - 1]
+  }
+
+  if (-not ($InstalledModels -contains $value)) {
+    throw "Model '$value' is not installed. Choose one of the listed models."
+  }
+  return $value
 }
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -251,7 +316,14 @@ if ($pullModel) {
   }
 }
 
-$ollamaState = Ensure-OllamaReady -ModelName $Model -OllamaExecutable $ollamaExecutable -PullModel $pullModel
+$ollamaState = Ensure-OllamaReady -OllamaExecutable $ollamaExecutable
+if ($pullModel) {
+  Pull-OllamaModel -OllamaExecutable $ollamaExecutable -ModelName $Model
+} else {
+  Write-Host "Skipping Ollama model pull."
+  $installedModels = Get-InstalledOllamaModels -OllamaExecutable $ollamaExecutable
+  $Model = Select-InstalledOllamaModel -InstalledModels $installedModels -PreferredModel $Model
+}
 
 if (-not (Test-Path -LiteralPath $envPath -PathType Leaf)) {
   Write-Step "Creating .env from .env.example"

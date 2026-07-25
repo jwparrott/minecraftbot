@@ -16,12 +16,19 @@ Full function/tool reference: [FUNCTIONS_AND_TOOLS.md](C:/Users/Admin/Documents/
   - `run_server_command`
   - `say_in_chat`
   - `list_players`
+  - `build_structure`
+  - `remove_structure`
 - NPC interaction tools:
   - `follow_player`
   - `stop_following`
   - `go_to_player`
   - `look_at_player`
   - `go_to_coordinates`
+  - `find_entity`
+  - `find_resource`
+  - `attack_nearest_hostile`
+  - `attack_target`
+  - `stop_attacking`
 
 ## Requirements
 - Node.js 20+

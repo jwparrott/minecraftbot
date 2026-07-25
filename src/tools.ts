@@ -62,6 +62,28 @@ function requireNumberField(object: Record<string, unknown>, key: string): numbe
   return value;
 }
 
+function optionalNumberField(object: Record<string, unknown>, key: string): number | undefined {
+  const value = object[key];
+  if (value === undefined || value === null) {
+    return undefined;
+  }
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    throw new Error(`Tool argument '${key}' must be a finite number when provided.`);
+  }
+  return value;
+}
+
+function optionalBooleanField(object: Record<string, unknown>, key: string): boolean | undefined {
+  const value = object[key];
+  if (value === undefined || value === null) {
+    return undefined;
+  }
+  if (typeof value !== "boolean") {
+    throw new Error(`Tool argument '${key}' must be a boolean when provided.`);
+  }
+  return value;
+}
+
 function validateServerCommand(
   command: string,
   commandMaxLength: number,
@@ -302,6 +324,216 @@ export function createToolRegistry(
         const z = requireNumberField(object, "z");
         return minecraft.goToCoordinates(x, y, z);
       }
+    ),
+    register(
+      {
+        type: "function",
+        function: {
+          name: "find_entity",
+          description:
+            "Find a player or mob, including scouting nearby areas if it is not currently visible.",
+          parameters: {
+            type: "object",
+            properties: {
+              target: { type: "string", description: "Player name or mob name to find." },
+              maxRadius: {
+                type: "number",
+                description: "Maximum scout radius in blocks. Defaults to 96."
+              },
+              searchSeconds: {
+                type: "number",
+                description: "Maximum scan duration in seconds. Defaults to 45."
+              }
+            },
+            required: ["target"]
+          }
+        }
+      },
+      async (args) => {
+        const object = requireObject(args);
+        const target = requireStringField(object, "target");
+        const maxRadius = optionalNumberField(object, "maxRadius") ?? 96;
+        const searchSeconds = optionalNumberField(object, "searchSeconds") ?? 45;
+        return minecraft.findEntity(target, maxRadius, searchSeconds);
+      }
+    ),
+    register(
+      {
+        type: "function",
+        function: {
+          name: "find_resource",
+          description:
+            "Find a resource block by name, scouting nearby areas when it is not currently visible.",
+          parameters: {
+            type: "object",
+            properties: {
+              block: { type: "string", description: "Block name, for example iron_ore or oak_log." },
+              maxRadius: {
+                type: "number",
+                description: "Maximum scout radius in blocks. Defaults to 96."
+              },
+              searchSeconds: {
+                type: "number",
+                description: "Maximum scan duration in seconds. Defaults to 45."
+              }
+            },
+            required: ["block"]
+          }
+        }
+      },
+      async (args) => {
+        const object = requireObject(args);
+        const block = requireStringField(object, "block");
+        const maxRadius = optionalNumberField(object, "maxRadius") ?? 96;
+        const searchSeconds = optionalNumberField(object, "searchSeconds") ?? 45;
+        return minecraft.findResource(block, maxRadius, searchSeconds);
+      }
+    ),
+    register(
+      {
+        type: "function",
+        function: {
+          name: "attack_nearest_hostile",
+          description: "Attack the nearest visible hostile mob for a limited time.",
+          parameters: {
+            type: "object",
+            properties: {
+              seconds: {
+                type: "number",
+                description: "Attack duration in seconds. Defaults to 15."
+              },
+              maxDistance: {
+                type: "number",
+                description: "Maximum acquisition distance for hostile targets. Defaults to 24."
+              }
+            }
+          }
+        }
+      },
+      async (args) => {
+        const object = requireObject(args);
+        const seconds = optionalNumberField(object, "seconds") ?? 15;
+        const maxDistance = optionalNumberField(object, "maxDistance") ?? 24;
+        return minecraft.attackNearestHostile(seconds, maxDistance);
+      }
+    ),
+    register(
+      {
+        type: "function",
+        function: {
+          name: "attack_target",
+          description: "Attack a specific visible target (player or mob) for a limited time.",
+          parameters: {
+            type: "object",
+            properties: {
+              target: { type: "string", description: "Exact player or mob name to attack." },
+              seconds: {
+                type: "number",
+                description: "Attack duration in seconds. Defaults to 15."
+              },
+              maxDistance: {
+                type: "number",
+                description: "Maximum acquisition distance for the target. Defaults to 32."
+              }
+            },
+            required: ["target"]
+          }
+        }
+      },
+      async (args) => {
+        const object = requireObject(args);
+        const target = requireStringField(object, "target");
+        const seconds = optionalNumberField(object, "seconds") ?? 15;
+        const maxDistance = optionalNumberField(object, "maxDistance") ?? 32;
+        return minecraft.attackTarget(target, seconds, maxDistance);
+      }
+    ),
+    register(
+      {
+        type: "function",
+        function: {
+          name: "stop_attacking",
+          description: "Stop active attack behavior.",
+          parameters: {
+            type: "object",
+            properties: {}
+          }
+        }
+      },
+      async () => minecraft.stopAttack()
+    ),
+    register(
+      {
+        type: "function",
+        function: {
+          name: "build_structure",
+          description:
+            "Build a cuboid structure using the Minecraft fill command (requires command permissions).",
+          parameters: {
+            type: "object",
+            properties: {
+              x1: { type: "number", description: "First corner X." },
+              y1: { type: "number", description: "First corner Y." },
+              z1: { type: "number", description: "First corner Z." },
+              x2: { type: "number", description: "Second corner X." },
+              y2: { type: "number", description: "Second corner Y." },
+              z2: { type: "number", description: "Second corner Z." },
+              block: {
+                type: "string",
+                description: "Block to use, for example minecraft:stone or oak_planks."
+              },
+              hollow: {
+                type: "boolean",
+                description: "Whether to build a hollow shell instead of a solid volume."
+              }
+            },
+            required: ["x1", "y1", "z1", "x2", "y2", "z2", "block"]
+          }
+        }
+      },
+      async (args) => {
+        const object = requireObject(args);
+        const x1 = requireNumberField(object, "x1");
+        const y1 = requireNumberField(object, "y1");
+        const z1 = requireNumberField(object, "z1");
+        const x2 = requireNumberField(object, "x2");
+        const y2 = requireNumberField(object, "y2");
+        const z2 = requireNumberField(object, "z2");
+        const block = requireStringField(object, "block");
+        const hollow = optionalBooleanField(object, "hollow") ?? false;
+        return minecraft.buildStructure(x1, y1, z1, x2, y2, z2, block, hollow);
+      }
+    ),
+    register(
+      {
+        type: "function",
+        function: {
+          name: "remove_structure",
+          description: "Remove a cuboid structure by filling the volume with air.",
+          parameters: {
+            type: "object",
+            properties: {
+              x1: { type: "number", description: "First corner X." },
+              y1: { type: "number", description: "First corner Y." },
+              z1: { type: "number", description: "First corner Z." },
+              x2: { type: "number", description: "Second corner X." },
+              y2: { type: "number", description: "Second corner Y." },
+              z2: { type: "number", description: "Second corner Z." }
+            },
+            required: ["x1", "y1", "z1", "x2", "y2", "z2"]
+          }
+        }
+      },
+      async (args) => {
+        const object = requireObject(args);
+        const x1 = requireNumberField(object, "x1");
+        const y1 = requireNumberField(object, "y1");
+        const z1 = requireNumberField(object, "z1");
+        const x2 = requireNumberField(object, "x2");
+        const y2 = requireNumberField(object, "y2");
+        const z2 = requireNumberField(object, "z2");
+        return minecraft.removeStructure(x1, y1, z1, x2, y2, z2);
+      }
     )
   ];
 
@@ -312,13 +544,14 @@ export function createToolRegistry(
       if (!executor) {
         throw new Error(`Unknown tool: ${name}`);
       }
+      const adminGuardedTools = new Set(["run_server_command", "build_structure", "remove_structure"]);
       if (
-        name === "run_server_command" &&
+        adminGuardedTools.has(name) &&
         config.guardrails.requireAdminForServerCommands &&
         config.guardrails.adminPlayers.size > 0 &&
         !config.guardrails.adminPlayers.has(context.player)
       ) {
-        throw new Error(`Player '${context.player}' is not permitted to run server commands.`);
+        throw new Error(`Player '${context.player}' is not permitted to use '${name}'.`);
       }
 
       if (name === "run_server_command") {
