@@ -16,6 +16,7 @@ Full function/tool reference: [FUNCTIONS_AND_TOOLS.md](C:/Users/Admin/Documents/
   - `run_server_command`
   - `say_in_chat`
   - `list_players`
+  - `scan_tool_capabilities`
   - `build_structure`
   - `remove_structure`
 - NPC interaction tools:

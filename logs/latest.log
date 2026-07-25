@@ -195,3 +195,41 @@ java.io.IOException: The handle is invalid
 [17:52:50] [Server thread/INFO]: Grabmadingdong left the game
 [17:53:27] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 3569ms behind, skipping 71 tick(s)
 [17:53:52] [Server thread/WARN]: Can't keep up! Did the system time change, or is the server overloaded? Running 3275ms behind, skipping 65 tick(s)
+[17:55:50] [Server thread/INFO]: AdminNPC lost connection: Internal Exception: java.io.IOException: An existing connection was forcibly closed by the remote host
+[17:55:50] [Server thread/INFO]: AdminNPC left the game
+[17:56:40] [Server thread/INFO]: Grabmadingdong[/24.162.124.63:65228] logged in with entity id 124940 at (-144.69999998807907, 67.78894649424868, 275.93956868628237)
+[17:56:40] [Server thread/INFO]: Grabmadingdong joined the game
+[17:56:49] [Server thread/INFO]: AdminNPC[/127.0.0.1:64360] logged in with entity id 125084 at (-125.5, 65.0, 251.5)
+[17:56:49] [Server thread/INFO]: AdminNPC joined the game
+[17:57:30] [Server thread/INFO]: <Grabmadingdong> !admin find and attack a mob
+[17:57:43] [Server thread/INFO]: <AdminNPC> I can help with that. To assist you, could you please specify the name or mob you would like to search for?
+[17:58:19] [Server thread/INFO]: <Grabmadingdong> !admin find and attack a spider
+[17:58:22] [Server thread/INFO]: <AdminNPC> I cannot assist with finding or attacking spiders. My current tools are focused on server management, such as managing bots and running commands.
+[18:00:56] [Server thread/ERROR]: Couldn't save stats
+java.io.FileNotFoundException: .\world\stats\8b48f668-a128-30ae-a5e7-36b8eb3ea0aa.json (The requested operation cannot be performed on a file with a user-mapped section open)
+	at java.io.FileOutputStream.open0(Native Method) ~[?:1.8.0_501]
+	at java.io.FileOutputStream.open(Unknown Source) ~[?:1.8.0_501]
+	at java.io.FileOutputStream.<init>(Unknown Source) ~[?:1.8.0_501]
+	at org.apache.commons.io.FileUtils.openOutputStream(FileUtils.java:360) ~[minecraft_server.1.12.2.jar:?]
+	at org.apache.commons.io.FileUtils.writeStringToFile(FileUtils.java:1981) ~[minecraft_server.1.12.2.jar:?]
+	at org.apache.commons.io.FileUtils.writeStringToFile(FileUtils.java:2017) ~[minecraft_server.1.12.2.jar:?]
+	at qn.b(SourceFile:52) [minecraft_server.1.12.2.jar:?]
+	at pl.b(SourceFile:305) [minecraft_server.1.12.2.jar:?]
+	at pl.j(SourceFile:757) [minecraft_server.1.12.2.jar:?]
+	at net.minecraft.server.MinecraftServer.C(SourceFile:577) [minecraft_server.1.12.2.jar:?]
+	at net.minecraft.server.MinecraftServer.run(SourceFile:464) [minecraft_server.1.12.2.jar:?]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_501]
+[18:00:56] [Server thread/ERROR]: Couldn't save stats
+java.io.FileNotFoundException: .\world\stats\770e609e-99af-3f7f-b673-2a43276df89c.json (The requested operation cannot be performed on a file with a user-mapped section open)
+	at java.io.FileOutputStream.open0(Native Method) ~[?:1.8.0_501]
+	at java.io.FileOutputStream.open(Unknown Source) ~[?:1.8.0_501]
+	at java.io.FileOutputStream.<init>(Unknown Source) ~[?:1.8.0_501]
+	at org.apache.commons.io.FileUtils.openOutputStream(FileUtils.java:360) ~[minecraft_server.1.12.2.jar:?]
+	at org.apache.commons.io.FileUtils.writeStringToFile(FileUtils.java:1981) ~[minecraft_server.1.12.2.jar:?]
+	at org.apache.commons.io.FileUtils.writeStringToFile(FileUtils.java:2017) ~[minecraft_server.1.12.2.jar:?]
+	at qn.b(SourceFile:52) [minecraft_server.1.12.2.jar:?]
+	at pl.b(SourceFile:305) [minecraft_server.1.12.2.jar:?]
+	at pl.j(SourceFile:757) [minecraft_server.1.12.2.jar:?]
+	at net.minecraft.server.MinecraftServer.C(SourceFile:577) [minecraft_server.1.12.2.jar:?]
+	at net.minecraft.server.MinecraftServer.run(SourceFile:464) [minecraft_server.1.12.2.jar:?]
+	at java.lang.Thread.run(Unknown Source) [?:1.8.0_501]

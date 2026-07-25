@@ -124,6 +124,53 @@ function resolveTargetPlayer(
   return contextPlayer;
 }
 
+function buildToolCapabilityReport(
+  definitions: ToolDefinition[],
+  contextPlayer: string,
+  adminGuardedTools: Set<string>,
+  config: AppConfig,
+  includeSchemas: boolean,
+  filter: string
+): string {
+  const normalizedFilter = filter.trim().toLowerCase();
+  const tools = definitions
+    .filter((definition) => {
+      if (normalizedFilter.length === 0) {
+        return true;
+      }
+      const haystack = `${definition.function.name} ${definition.function.description}`.toLowerCase();
+      return haystack.includes(normalizedFilter);
+    })
+    .map((definition) => {
+      const name = definition.function.name;
+      const adminRequired =
+        adminGuardedTools.has(name) &&
+        config.guardrails.requireAdminForServerCommands &&
+        config.guardrails.adminPlayers.size > 0;
+      const usableByPromptingPlayer = adminRequired
+        ? config.guardrails.adminPlayers.has(contextPlayer)
+        : true;
+
+      return {
+        name,
+        description: definition.function.description,
+        adminRequired,
+        usableByPromptingPlayer,
+        parameters: includeSchemas ? definition.function.parameters : undefined
+      };
+    });
+
+  return JSON.stringify(
+    {
+      player: contextPlayer,
+      toolCount: tools.length,
+      tools
+    },
+    null,
+    2
+  );
+}
+
 export function createToolRegistry(
   minecraft: MinecraftController,
   config: AppConfig
@@ -133,6 +180,7 @@ export function createToolRegistry(
   const maxChatReplyChars = Math.max(1, Math.floor(config.guardrails.maxChatReplyChars));
   const allowSet = new Set(config.guardrails.allowedCommandPrefixes.map((c) => c.toLowerCase()));
   const blockSet = new Set(config.guardrails.blockedCommandPrefixes.map((c) => c.toLowerCase()));
+  const adminGuardedTools = new Set(["run_server_command", "build_structure", "remove_structure"]);
   const executors = new Map<string, ToolExecutor>();
 
   const register = (definition: ToolDefinition, executor: ToolExecutor): ToolDefinition => {
@@ -534,6 +582,30 @@ export function createToolRegistry(
         const z2 = requireNumberField(object, "z2");
         return minecraft.removeStructure(x1, y1, z1, x2, y2, z2);
       }
+    ),
+    register(
+      {
+        type: "function",
+        function: {
+          name: "scan_tool_capabilities",
+          description:
+            "Inspect available tools and return a capability report so the model can reason about what it can do.",
+          parameters: {
+            type: "object",
+            properties: {
+              includeSchemas: {
+                type: "boolean",
+                description: "Include full JSON parameter schemas in the response. Defaults to true."
+              },
+              filter: {
+                type: "string",
+                description: "Optional case-insensitive text filter by tool name or description."
+              }
+            }
+          }
+        }
+      },
+      async () => "Capability scan complete."
     )
   ];
 
@@ -544,7 +616,6 @@ export function createToolRegistry(
       if (!executor) {
         throw new Error(`Unknown tool: ${name}`);
       }
-      const adminGuardedTools = new Set(["run_server_command", "build_structure", "remove_structure"]);
       if (
         adminGuardedTools.has(name) &&
         config.guardrails.requireAdminForServerCommands &&
@@ -563,6 +634,19 @@ export function createToolRegistry(
       }
 
       const args = parseArgs(rawArgs);
+      if (name === "scan_tool_capabilities") {
+        const object = requireObject(args);
+        const includeSchemas = optionalBooleanField(object, "includeSchemas") ?? true;
+        const filter = typeof object.filter === "string" ? object.filter : "";
+        return buildToolCapabilityReport(
+          definitions,
+          context.player,
+          adminGuardedTools,
+          config,
+          includeSchemas,
+          filter
+        );
+      }
       if (name === "follow_player" || name === "go_to_player" || name === "look_at_player") {
         const object = requireObject(args);
         object.player = resolveTargetPlayer(object, context.player);
