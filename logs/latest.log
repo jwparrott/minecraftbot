@@ -165,3 +165,5 @@ java.io.IOException: The handle is invalid
 [17:26:59] [Server thread/INFO]: <AdminNPC> Done.
 [17:27:28] [Server thread/INFO]: <Grabmadingdong> !admin follow Grabmadingdong
 [17:27:35] [Server thread/INFO]: <AdminNPC> I apologize, but it seems the server encountered an issue and could not retrieve the follow information for Grabmadingdong.
+[17:32:40] [Server thread/INFO]: AdminNPC lost connection: Internal Exception: java.io.IOException: An existing connection was forcibly closed by the remote host
+[17:32:40] [Server thread/INFO]: AdminNPC left the game
