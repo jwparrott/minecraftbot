@@ -5,13 +5,14 @@ export type ChatMessage = {
   content: string;
   name?: string;
   tool_call_id?: string;
+  tool_calls?: ToolCall[];
 };
 
 export type ToolCall = {
   id: string;
   function: {
     name: string;
-    arguments: string;
+    arguments: string | Record<string, unknown>;
   };
 };
 

@@ -50,7 +50,8 @@ export class OllamaToolAgent {
       const assistant = response.message;
       messages.push({
         role: "assistant",
-        content: assistant.content ?? ""
+        content: assistant.content ?? "",
+        tool_calls: assistant.tool_calls
       });
 
       if (!assistant.tool_calls || assistant.tool_calls.length === 0) {
@@ -111,7 +112,13 @@ export class OllamaToolAgent {
     }
 
     if (!response.ok) {
-      throw new Error(`Ollama API error: ${response.status} ${response.statusText}`);
+      const details = await response.text();
+      const detailText = details.trim();
+      throw new Error(
+        detailText.length > 0
+          ? `Ollama API error: ${response.status} ${response.statusText} - ${detailText}`
+          : `Ollama API error: ${response.status} ${response.statusText}`
+      );
     }
 
     const data = (await response.json()) as ChatCompletionResponse;

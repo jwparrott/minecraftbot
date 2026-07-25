@@ -18,10 +18,17 @@ type ToolExecutor = (args: unknown) => Promise<string>;
 
 export type ToolRegistry = {
   definitions: ToolDefinition[];
-  execute: (name: string, rawArgs: string, context: { player: string }) => Promise<string>;
+  execute: (
+    name: string,
+    rawArgs: string | Record<string, unknown>,
+    context: { player: string }
+  ) => Promise<string>;
 };
 
-function parseArgs(rawArgs: string): unknown {
+function parseArgs(rawArgs: string | Record<string, unknown>): unknown {
+  if (typeof rawArgs === "object" && rawArgs !== null) {
+    return rawArgs;
+  }
   if (!rawArgs || rawArgs.trim().length === 0) {
     return {};
   }
